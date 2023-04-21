@@ -1,0 +1,138 @@
+:root {
+	--background: rgb(245, 239, 230);
+	--text-primary: rgb(18, 18, 18);
+	--link-hover: rgb(83, 149, 225);
+	--nav-background: rgb(30, 30, 30);
+	--selection-background: rgb(57, 4, 203);
+	--focus-outline: rgb(60, 78, 242);
+
+	--body-font: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+		'Open Sans', 'Helvetica Neue', Helvetica, Oxygen, Ubuntu, Cantarell, 'Apple Color Emoji', Arial,
+		sans-serif;
+	--content-width: 680px;
+	--page-top: 4rem;
+	--section-bottom: 4rem;
+	--corner-radius: 8px;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+	margin: 0;
+}
+
+html:focus,
+html:focus-within {
+	scroll-behavior: smooth;
+}
+
+::-moz-selection {
+	background: var(--selection-background);
+}
+
+::selection {
+	background: var(--selection-background);
+}
+
+body {
+	background-color: var(--background);
+	color: var(--text-primary);
+	font-family: var(--body-font);
+	font-size: 1rem;
+	font-weight: 400;
+	line-height: 1.6rem;
+	-webkit-font-smoothing: antialiased;
+}
+
+main {
+	margin: var(--page-top) auto var(--section-bottom) auto;
+	max-width: var(--content-width);
+	padding: 0 1.25rem;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	overflow-wrap: break-word;
+}
+
+h1,
+h2,
+h3 {
+	margin-bottom: 0.5rem;
+	line-height: 1.25;
+	font-weight: 700;
+}
+
+h1 {
+	font-size: 1.4rem;
+	letter-spacing: 0.004em;
+}
+
+h2,
+h3 {
+	font-size: 1.5rem;
+	letter-spacing: 0.009em;
+}
+
+h3 {
+	font-size: 1.25rem;
+}
+
+a {
+	color: var(--text-primary);
+	text-underline-offset: 4px;
+	text-decoration-thickness: 1px;
+	text-decoration-skip-ink: auto;
+}
+
+a:focus-visible {
+	outline-style: solid;
+	outline-color: var(--focus-outline);
+	outline-width: 2px;
+	border-radius: 2px;
+	text-decoration: none;
+}
+
+p,
+ul {
+	margin: 1rem 0;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+	display: block;
+	max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+	font: inherit;
+}
+
+/* Remove all animations, transitions and smooth scroll for people that prefer not to see them */
+@media (prefers-reduced-motion: reduce) {
+	html:focus,
+	html:focus-within {
+		scroll-behavior: auto;
+	}
+
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+}

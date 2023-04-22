@@ -103,11 +103,21 @@ const { src, title, class: className } = Astro.props;
 		attributeChangedCallback(name: string, oldValue: string, newValue: string) {
 			switch (name) {
 				case 'src':
-					this.configureAudio();
-					this.checkFileTypeSupport();
 					if (this.audio) {
 						this.audio.removeEventListener('timeupdate', this.updateTimeHandler);
 						this.audio.removeEventListener('loadedmetadata', this.metadataTimeHandler);
+					}
+					this.configureAudio();
+					this.checkFileTypeSupport();
+					if (this.audio && this.playIcon && this.pauseIcon && this.playPauseButton) {
+						this.pauseIcon.style.display = 'none';
+						this.playIcon.style.display = 'block';
+						this.playPauseButton.setAttribute('aria-label', 'Play song');
+						this.audio.pause();
+						this.playing = false;
+					}
+					if (this.progressBar) {
+						this.progressBar.value = 0;
 					}
 					this.setTimeListener();
 					break;
@@ -239,7 +249,17 @@ const { src, title, class: className } = Astro.props;
 			});
 		}
 
-		setTimeListener() {
+		public playSong() {
+			if (this.audio && this.playIcon && this.pauseIcon && this.playPauseButton) {
+				this.pauseIcon.style.display = 'block';
+				this.playIcon.style.display = 'none';
+				this.playPauseButton.setAttribute('aria-label', 'Pause song');
+				this.audio.play();
+				this.playing = true;
+			}
+		}
+
+		private setTimeListener() {
 			this.audio?.addEventListener('loadedmetadata', () => {
 				this.metadataTimeHandler();
 			});
@@ -265,16 +285,20 @@ const { src, title, class: className } = Astro.props;
 				this.pauseIcon &&
 				this.playPauseButton
 			) {
-				this.progressBar.value = this.audio.currentTime / this.audio.duration;
-				this.currentTime.textContent = `${this.formatTime(this.audio.currentTime)}`;
-				this.duration.textContent = `${this.formatTime(this.audio.duration)}`;
+				if (!isNaN(this.audio.currentTime / this.audio.duration)) {
+					this.progressBar.value = this.audio.currentTime / this.audio.duration;
+					this.currentTime.textContent = `${this.formatTime(this.audio.currentTime)}`;
+					this.duration.textContent = `${this.formatTime(this.audio.duration)}`;
 
-				if (this.audio.currentTime === this.audio.duration) {
-					this.audio.currentTime = 0;
-					this.pauseIcon.style.display = 'none';
-					this.playIcon.style.display = 'block';
-					this.playPauseButton.setAttribute('aria-label', 'Play song');
-					this.playing = false;
+					if (this.audio.currentTime === this.audio.duration) {
+						this.audio.currentTime = 0;
+						this.pauseIcon.style.display = 'none';
+						this.playIcon.style.display = 'block';
+						this.playPauseButton.setAttribute('aria-label', 'Play song');
+						this.playing = false;
+						const event = new Event('audiofinished');
+						this.dispatchEvent(event);
+					}
 				}
 			}
 		}

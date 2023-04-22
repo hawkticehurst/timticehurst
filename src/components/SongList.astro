@@ -52,20 +52,35 @@ const { songs } = Astro.props;
 		'song-23': '23-claritys-fire.mp3',
 	};
 
+	// Defaults to 'song-1' because that is the song that is set to play on page load
+	let mostRecentSongId: string = 'song-1';
+
 	function main() {
-		const audioPlayer = document.querySelector('audio-player') as HTMLElement;
+		const audioPlayer = document.querySelector('audio-player') as any;
 		const songs = document.querySelectorAll('.song');
 		if (audioPlayer && songs) {
 			for (const song of songs) {
 				song.addEventListener('click', function (this: any) {
 					const songId = this.id;
+					mostRecentSongId = songId;
 					const songSrc = `songs/${songMapping[songId]}`;
 					const songTitle = this.querySelector('.title-col').textContent;
 					audioPlayer.setAttribute('src', songSrc);
 					audioPlayer.setAttribute('title', songTitle);
+					audioPlayer.playSong();
 				});
 			}
 		}
+
+		audioPlayer.addEventListener('audiofinished', function (this: any) {
+			const songId = mostRecentSongId;
+			const nextSongId = `song-${parseInt(songId.split('-')[1]) + 1}`;
+			const nextSong = document.getElementById(nextSongId);
+			if (nextSong) {
+				nextSong.click();
+				mostRecentSongId = nextSongId;
+			}
+		});
 	}
 </script>
 

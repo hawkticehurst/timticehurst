@@ -81,6 +81,16 @@ const { songs } = Astro.props;
 				mostRecentSongId = nextSongId;
 			}
 		});
+
+		window.addEventListener('keydown', function (event) {
+			if (event.code === 'Space') {
+				event.preventDefault();
+				const playButton = document.querySelector('audio-player #play-btn') as HTMLButtonElement;
+				if (playButton) {
+					playButton.click();
+				}
+			}
+		});
 	}
 </script>
 

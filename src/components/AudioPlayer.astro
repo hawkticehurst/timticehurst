@@ -321,7 +321,7 @@ const { src, title, class: className } = Astro.props;
 	audio-player button {
 		color: white;
 		background-color: black;
-		border: 1px solid #000;
+		border: none;
 		border-radius: 50%;
 		cursor: pointer;
 		width: 40px;
@@ -334,7 +334,7 @@ const { src, title, class: className } = Astro.props;
 	}
 
 	audio-player button:focus-visible {
-		outline: solid 2px black;
+		outline: solid 2px var(--focus-outline);
 		outline-offset: 2px;
 	}
 

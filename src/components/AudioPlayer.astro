@@ -115,6 +115,7 @@ const { src, title, class: className } = Astro.props;
 						this.playPauseButton.setAttribute('aria-label', 'Play song');
 						this.audio.pause();
 						this.playing = false;
+						this.dispatchEvent(new Event('audiopaused'));
 					}
 					if (this.progressBar) {
 						this.progressBar.value = 0;
@@ -228,12 +229,14 @@ const { src, title, class: className } = Astro.props;
 						this.playPauseButton.setAttribute('aria-label', 'Pause song');
 						this.audio.play();
 						this.playing = true;
+						this.dispatchEvent(new Event('audioplaying'));
 					} else {
 						this.pauseIcon.style.display = 'none';
 						this.playIcon.style.display = 'block';
 						this.playPauseButton.setAttribute('aria-label', 'Play song');
 						this.audio.pause();
 						this.playing = false;
+						this.dispatchEvent(new Event('audiopaused'));
 					}
 				}
 			});
@@ -256,6 +259,7 @@ const { src, title, class: className } = Astro.props;
 				this.playPauseButton.setAttribute('aria-label', 'Pause song');
 				this.audio.play();
 				this.playing = true;
+				this.dispatchEvent(new Event('audioplaying'));
 			}
 		}
 
@@ -296,8 +300,8 @@ const { src, title, class: className } = Astro.props;
 						this.playIcon.style.display = 'block';
 						this.playPauseButton.setAttribute('aria-label', 'Play song');
 						this.playing = false;
-						const event = new Event('audiofinished');
-						this.dispatchEvent(event);
+						this.dispatchEvent(new Event('audiopaused'));
+						this.dispatchEvent(new Event('audiofinished'));
 					}
 				}
 			}

@@ -61,6 +61,11 @@ const { songs } = Astro.props;
 		if (audioPlayer && songs) {
 			for (const song of songs) {
 				song.addEventListener('click', function (this: any) {
+					const oldSong = document.getElementById(mostRecentSongId);
+					if (oldSong) {
+						oldSong.style.color = 'black';
+						oldSong.style.background = 'transparent';
+					}
 					const songId = this.id;
 					mostRecentSongId = songId;
 					const songSrc = `songs/${songMapping[songId]}`;
@@ -71,6 +76,24 @@ const { songs } = Astro.props;
 				});
 			}
 		}
+
+		audioPlayer.addEventListener('audioplaying', function (this: any) {
+			const songId = mostRecentSongId;
+			const song = document.getElementById(songId);
+			if (song) {
+				song.style.color = 'rgb(40 35 204)';
+				song.style.background = 'rgb(60 134 201 / 14%)';
+			}
+		});
+
+		audioPlayer.addEventListener('audiopaused', function (this: any) {
+			const songId = mostRecentSongId;
+			const song = document.getElementById(songId);
+			if (song) {
+				song.style.color = 'black';
+				song.style.background = 'transparent';
+			}
+		});
 
 		audioPlayer.addEventListener('audiofinished', function (this: any) {
 			const songId = mostRecentSongId;
@@ -84,6 +107,10 @@ const { songs } = Astro.props;
 
 		window.addEventListener('keydown', function (event) {
 			if (event.code === 'Space') {
+				const target = event.target as HTMLElement;
+				if (target.classList.contains('song')) {
+					return;
+				}
 				event.preventDefault();
 				const playButton = document.querySelector('audio-player #play-btn') as HTMLButtonElement;
 				if (playButton) {
@@ -146,10 +173,11 @@ const { songs } = Astro.props;
 		color: black;
 		background: transparent;
 		border-radius: var(--corner-radius);
+		font-weight: 500;
 	}
 
 	.song:hover {
-		background-color: #e7e0d8;
+		background-color: #e8e1d8;
 		cursor: pointer;
 	}
 
